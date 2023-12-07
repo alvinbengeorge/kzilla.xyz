@@ -32,6 +32,7 @@ export const APIEndpoints = {
   },
   App: {
     BASE_ENDPOINT: "/app",
+    MY_LINKS: "/me",
     CREATE: "/",
     UPDATE: "/",
     DISABLE: "/disable",
