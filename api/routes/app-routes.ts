@@ -9,14 +9,14 @@ import { createLinkSchema, updateLinkSchema } from "../models/joi-schemas";
 
 const router = Router();
 router.get(
-  APIEndpoints.App.BASE_ENDPOINT,
+  APIEndpoints.App.MY_LINKS,
   async (req: Request, res: Response) => {
-    console.log(req.cookies);
-    if (!req.cookies.linkIds || req.cookies.linkIds.length === 0)
+    
+    if (!req.body.linkIds || req.body.linkIds.length === 0)
       return res.status(404).send();
-    console.log(req.cookies.linkIds);
+
     try {
-      const result = await fetchMyLinks(req.cookies.linkIds);
+      const result = await fetchMyLinks(req.body.linkIds);
       res.status(200).json({
         links: result,
       });
@@ -41,13 +41,11 @@ router.post(
         req.clientIp,
         req.body.customCode
       );
-      let linkIds = Array.isArray(req.cookies.linkIds)
-        ? req.cookies.linkIds
+      let linkIds = Array.isArray(req.body.linkIds)
+        ? req.body.linkIds
         : [];
       linkIds.push(result.linkId);
-      res.cookie("linkIds", linkIds, {
-        expires: new Date(253402300799999),
-      });
+      
       return res.status(201).json({
         link: result,
         linkIds,
